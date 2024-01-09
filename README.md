@@ -16,4 +16,4 @@ Backend: .NET Core WebApi
     - npm init
     - npm install
     - npm install concurrently@8.2.2
-    - npm cors@2.8.5
+    - npm install cors@2.8.5
