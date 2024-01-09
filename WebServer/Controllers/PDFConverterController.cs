@@ -8,7 +8,7 @@ using file = System.IO.File;
 namespace WebServer.Controllers
 {
     [ApiController]
-    [Route("/[controller]")]
+    [Route("/")]
     public class PDFConverterController : ControllerBase
     {
         //private readonly ILogger<PDFConverterController> _logger;
@@ -19,9 +19,6 @@ namespace WebServer.Controllers
             //_logger = logger;
             _hostingEnvironment = hostingEnvironment;
         }
-        //public PDFConverterController()
-        //{ 
-        //}
 
         [HttpPost("PDFConverter")]
         public async Task<IActionResult> PDFConverter(IFormFile htmlFile)
@@ -48,21 +45,50 @@ namespace WebServer.Controllers
             }
         }
 
-        [HttpPost("PDFConverterOnFailure")]
-        public async Task<IActionResult> PDFConverterOnFailure(IFormFile htmlFile)
+        //[HttpPost("PDFConverterOnFailure")]
+        //public async Task<IActionResult> PDFConverterOnFailure(IFormFile htmlFile)
+        //{
+        //    try
+        //    {
+        //        string filePath = _hostingEnvironment.ContentRootPath + "Files\\" + htmlFile.FileName;
+
+        //        var pdfBytes = await ConvertHtmlToPdfAsync(file.ReadAllText(filePath));
+
+        //        var fileName = htmlFile.FileName.Split('.')[0] + ".pdf";
+        //        string destFilePath = Directory.GetParent(_hostingEnvironment.ContentRootPath)?.Parent + "\\clientapp\\src\\ConvertedFiles\\" + fileName;
+
+        //        using (FileStream fileStream = new FileStream(destFilePath, FileMode.Create, FileAccess.Write))
+        //        {
+        //            fileStream.Write(pdfBytes, 0, pdfBytes.Length);
+        //        }
+        //        return Ok();
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return BadRequest();
+        //    }
+        //}
+
+        internal async Task<IActionResult> ConvertOnRestart()
         {
             try
             {
-                string filePath = _hostingEnvironment.ContentRootPath + "Files\\" + htmlFile.FileName;
+                string folderPath = _hostingEnvironment.ContentRootPath + "Files\\";
+                string[] files = Directory.GetFiles(folderPath);
 
-                var pdfBytes = await ConvertHtmlToPdfAsync(file.ReadAllText(filePath));
+                string destFolderPath =  Directory.GetParent(_hostingEnvironment.ContentRootPath)?.Parent + "\\clientapp\\src\\ConvertedFiles\\";
 
-                var fileName = htmlFile.FileName.Split('.')[0] + ".pdf";
-                string destFilePath = Directory.GetParent(_hostingEnvironment.ContentRootPath)?.Parent + "\\clientapp\\src\\ConvertedFiles\\" + fileName;
-
-                using (FileStream fileStream = new FileStream(destFilePath, FileMode.Create, FileAccess.Write))
+                foreach (string filePath in files)
                 {
-                    fileStream.Write(pdfBytes, 0, pdfBytes.Length);
+                    var pdfBytes = await ConvertHtmlToPdfAsync(file.ReadAllText(filePath));
+                    var ConvertedFileName = Path.GetFileNameWithoutExtension(filePath) + ".pdf";
+                    var destFilePath = destFolderPath + ConvertedFileName;
+
+                    using (FileStream fileStream = new FileStream(destFilePath, FileMode.Create, FileAccess.Write))
+                    {
+                        fileStream.Write(pdfBytes, 0, pdfBytes.Length);
+                    }
+                    file.Delete(filePath);
                 }
                 return Ok();
             }

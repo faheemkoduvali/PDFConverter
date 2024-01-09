@@ -1,5 +1,6 @@
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.FileProviders;
+using Microsoft.Extensions.Hosting;
 using System.Data;
 using WebServer.Controllers;
 
@@ -21,6 +22,8 @@ builder.Services.AddCors(options =>
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddSingleton<PDFConverterController>();
+
 builder.WebHost.UseKestrel(options =>
 {
     options.Limits.KeepAliveTimeout = TimeSpan.FromSeconds(1000); // Set the desired timeout
@@ -31,7 +34,7 @@ var app = builder.Build();
 // Custom Middleware to store the last request and log response status
 app.Use(async (context, next) =>
 {
-    if (context.Request.Path.HasValue == true && context.Request.Path.Value == "/PDFConverter/PDFConverterOnFailure")
+    if (context.Request.Path.HasValue == true && context.Request.Path.Value == "/PDFConverter")
     {
         string parentFolderPath = app.Environment.ContentRootPath;
         string fileName = context.Request.Form.Files[0].FileName;
@@ -48,7 +51,7 @@ app.Use(async (context, next) =>
 
 
     int statusCode = context.Response.StatusCode;
-    if (context.Request.Path.HasValue == true && context.Request.Path.Value == "/PDFConverter/PDFConverterOnFailure")
+    if (context.Request.Path.HasValue == true && context.Request.Path.Value == "/PDFConverter")
     {
         string fileName = context.Request.Form.Files[0].FileName;
         string filePath = app.Environment.ContentRootPath + "\\Files\\" + fileName;
@@ -102,4 +105,11 @@ app.MapControllers();
 //        //PDFConverter.
 //    });
 
+
+app.Services.GetRequiredService<IHostApplicationLifetime>()
+    .ApplicationStarted.Register(() =>
+    {
+        PDFConverterController PDFConverter = app.Services.GetRequiredService<PDFConverterController>();
+        PDFConverter.ConvertOnRestart();
+    });
 app.Run();
