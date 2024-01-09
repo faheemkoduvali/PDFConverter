@@ -82,30 +82,6 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-// Handle graceful shutdown
-//app.Services.GetRequiredService<IHostApplicationLifetime>()
-//    .ApplicationStopping.Register(() =>
-//    {
-//        //string folderPath = app.Environment.ContentRootPath + "\\Files";
-//        //string[] files = Directory.GetFiles(folderPath);
-//        //foreach (string filePath in files)
-//        //{
-//        //    PDFConverterController PDFConverter = new PDFConverterController(app.Environment);
-
-//        //    IFileProvider fileProvider = new PhysicalFileProvider(Path.GetDirectoryName(folderPath));
-
-//        //    // Get the file information
-//        //    IFileInfo fileInfo = fileProvider.GetFileInfo(filePath);
-
-//        //    // Create an IFormFile from the file information
-//        //    IFormFile formFile = new FormFile(fileInfo.CreateReadStream(), 0, fileInfo.Length, null, fileInfo.Name);
-
-//        //    //PDFConverter.PDFConverterOnFailure(formFile);
-//        //}
-//        //PDFConverter.
-//    });
-
-
 app.Services.GetRequiredService<IHostApplicationLifetime>()
     .ApplicationStarted.Register(() =>
     {

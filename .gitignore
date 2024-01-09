@@ -1,0 +1,24 @@
+# .gitignore for React and .NET Core projects
+
+# Node.js
+node_modules/
+
+# React build outputs
+build/
+dist/
+
+# Visual Studio Code
+.vscode/
+
+
+# .NET Core
+bin/
+obj/
+*.dll
+*.pdb
+*.user
+*.suo
+*.cache
+*.log
+*.vscode
+.vs/

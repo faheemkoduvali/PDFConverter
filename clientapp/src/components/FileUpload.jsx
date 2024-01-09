@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 
 
 
@@ -7,6 +7,23 @@ const FileUpload = () => {
     const [convertedFiles, setConvertedFiles] = useState([]);
     const [loading, setLoading] = useState(false);
     const [fileInputKey, setFileInputKey] = useState(0);
+    const [fileDirectoryPath, setfileDirectoryPath] = useState(null);
+
+
+    // useEffect(() => {
+    //     const fetchData = async () => {
+    //       try {
+    //         const response = await fetch('http://localhost:3001/getFileDirectory');
+    //         const data = await response.json();
+    //         setfileDirectoryPath(data.fileDirectory);
+    //       } catch (error) {
+    //         console.error('Error fetching file directory:', error);
+    //       }
+    //     };
+    
+    //     fetchData();
+    //   }, []);
+
 
     const handleFile = (event) => {
         setFile(event.target.files[0]);
@@ -40,8 +57,6 @@ const FileUpload = () => {
                         ...prevConvertedFiles,
                         { name: filename, blobUrl },
                     ]);
-                    debugger;
-
                     // Clear the file input after successful conversion
                     setFile(null);
                     setFileInputKey((prevKey) => prevKey + 1);
@@ -53,17 +68,13 @@ const FileUpload = () => {
                 }
             }
             catch (err) {
-                debugger;
                 const filename = file.name.split('.')[0] + '.pdf';
                 const maxRetries = 5;
                 let retryCount = 0;
 
                 while (retryCount < maxRetries) {
                     try {
-                        const context = await require.context('../ConvertedFiles', true, /\.pdf$/);
-                        const filePath = await context(`./${filename}`);
-                        const response = await fetch(filePath);
-                        debugger;
+                        const response = await fetch(`http://localhost:3001/${filename}`);
                         if (response.ok) {
                             const blob = await response.blob();
                             const blobUrl = window.URL.createObjectURL(blob);
@@ -76,6 +87,8 @@ const FileUpload = () => {
                             // Clear the file input after successful conversion
                             setFile(null);
                             setFileInputKey((prevKey) => prevKey + 1);
+
+                            await deleteFile(filename);
                             return;
                         } else {
                             throw new Error('Server error.');
@@ -105,6 +118,19 @@ const FileUpload = () => {
         link.click();
         document.body.removeChild(link);
     };
+
+    const deleteFile = async (fileName) => {
+        
+        await fetch(`http://localhost:3001/deleteFile/${fileName}`, {
+        method: 'DELETE',
+        })
+        .then((response) => {
+            if (!response.status !== 200) {
+            return 0;
+            }
+            return 1;
+        })
+    }
 
     return (
         <div>

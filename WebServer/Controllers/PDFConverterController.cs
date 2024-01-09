@@ -45,30 +45,6 @@ namespace WebServer.Controllers
             }
         }
 
-        //[HttpPost("PDFConverterOnFailure")]
-        //public async Task<IActionResult> PDFConverterOnFailure(IFormFile htmlFile)
-        //{
-        //    try
-        //    {
-        //        string filePath = _hostingEnvironment.ContentRootPath + "Files\\" + htmlFile.FileName;
-
-        //        var pdfBytes = await ConvertHtmlToPdfAsync(file.ReadAllText(filePath));
-
-        //        var fileName = htmlFile.FileName.Split('.')[0] + ".pdf";
-        //        string destFilePath = Directory.GetParent(_hostingEnvironment.ContentRootPath)?.Parent + "\\clientapp\\src\\ConvertedFiles\\" + fileName;
-
-        //        using (FileStream fileStream = new FileStream(destFilePath, FileMode.Create, FileAccess.Write))
-        //        {
-        //            fileStream.Write(pdfBytes, 0, pdfBytes.Length);
-        //        }
-        //        return Ok();
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return BadRequest();
-        //    }
-        //}
-
         internal async Task<IActionResult> ConvertOnRestart()
         {
             try

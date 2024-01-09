@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\fahee\\Downloads\\HTMLToPDF_Demo\\WebServer\\WebServer.csproj": {}
+    "C:\\Users\\fahee\\Downloads\\PDFConverter\\WebServer\\WebServer.csproj": {}
   },
   "projects": {
-    "C:\\Users\\fahee\\Downloads\\HTMLToPDF_Demo\\WebServer\\WebServer.csproj": {
+    "C:\\Users\\fahee\\Downloads\\PDFConverter\\WebServer\\WebServer.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\fahee\\Downloads\\HTMLToPDF_Demo\\WebServer\\WebServer.csproj",
+        "projectUniqueName": "C:\\Users\\fahee\\Downloads\\PDFConverter\\WebServer\\WebServer.csproj",
         "projectName": "WebServer",
-        "projectPath": "C:\\Users\\fahee\\Downloads\\HTMLToPDF_Demo\\WebServer\\WebServer.csproj",
+        "projectPath": "C:\\Users\\fahee\\Downloads\\PDFConverter\\WebServer\\WebServer.csproj",
         "packagesPath": "C:\\Users\\fahee\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\fahee\\Downloads\\HTMLToPDF_Demo\\WebServer\\obj\\",
+        "outputPath": "C:\\Users\\fahee\\Downloads\\PDFConverter\\WebServer\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\fahee\\AppData\\Roaming\\NuGet\\NuGet.Config",
